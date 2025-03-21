@@ -1,0 +1,162 @@
+{% comment %} {% for pro in prod %}
+{{pro.name}}
+{{pro.price}}
+{{pro.description}}
+<a href="{% url 'update_product' pro.id %}"> <Button type = "button">Update</a>
+<a href="{% url 'delete_product' pro.id %}"> <Button type = "button">Delete</a>
+
+{% endfor %}
+
+<div>
+    <form method = "post" >
+        {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Add to Cart">
+    </form>
+</div> {% endcomment %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Amazon fashion</title>
+        <style>
+            /* General Page Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Product Container */
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    padding: 20px;
+}
+
+/* Product Card */
+.product-card {
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Product Image */
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+/* Product Name */
+.product-card h3 {
+    color: #2874f0;
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+/* Product Price */
+.product-card .price {
+    font-size: 20px;
+    color: #27ae60;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+/* Product Description */
+.product-card p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+/* Buttons */
+button {
+    background-color: #2874f0;
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    margin: 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background-color: #185adb;
+}
+
+/* Form Styling */
+form {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    margin: 20px auto;
+}
+
+/* Form Input */
+input[type="submit"] {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #e64a19;
+}
+
+        </style>
+
+    </head>
+<body>
+
+<div class="product-container">
+    {% for pro in prod %}
+    <div class="product-card">
+        {% if pro.image %}
+        <img src="{{ pro.image.url }}" alt="Product Image" class="product-image">
+        {% endif %}
+        <h3>{{ pro.name }}</h3>
+        <p class="price">${{ pro.price }}</p>
+        <p>{{ pro.description }}</p>
+        <a href="{% url 'update_product' pro.id %}"><button type="button">Update</button></a>
+        <a href="{% url 'delete_product' pro.id %}"><button type="button">Delete</button></a>
+    </div>
+    {% endfor %}
+</div>
+
+<div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Add to Cart">
+    </form>
+</div>
+</body>
+</html>
